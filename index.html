@@ -9,13 +9,35 @@
     <form action="/generate" method="post">
         <input type="text" name="prompt" placeholder="Enter a prompt">
         <input type="submit" value="Generate">
+        <input type="checkbox" name="upscale" value="true"> Upscale
+        <select name="upscale_factor">
+            <option value="1">1x</option>
+            <option value="2">2x</option>
+            <option value="3">3x</option>
+            <option value="4">4x</option>
+        </select>
+        <select name="upscale_method">
+            <option value="bicubic">Bicubic</option>
+            <option value="bilinear">Bilinear</option>
+            <option value="nearest-neighbor">Nearest-neighbor</option>
+        </select>
+        <select name="upscale_quality">
+            <option value="low">Low</option>
+            <option value="medium">Medium</option>
+            <option value="high">High</option>
+            <option value="ultra">Ultra</option>
+        </select>
     </form>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.6.0/jquery.min.js"></script>
     <script>
     $(document).ready(function() {
         $('#generate').on('click', function() {
             var prompt = $('#prompt').val();
-            $.post('/generate', { prompt: prompt }, function(response) {
+            var upscale = $('#upscale').prop('checked');
+            var upscale_factor = $('#upscale_factor').val();
+            var upscale_method = $('#upscale_method').val();
+            var upscale_quality = $('#upscale_quality').val();
+            $.post('/generate', { prompt: prompt, upscale: upscale, upscale_factor: upscale_factor, upscale_method: upscale_method, upscale_quality: upscale_quality }, function(response) {
                 $('#image').html(response);
             });
         });
